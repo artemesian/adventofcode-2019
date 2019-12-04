@@ -26,12 +26,13 @@ const fy = (b,i,j) =>{
 	c[2] = j;
 	return fx(c,0);
 }
-
+checkPoint
 for (var i = 0; i <= 99; i++) {
 	for (var j = 0; j <= 99; j++) {
 		var result = fy(numNewArr,i,j);
 		if (result===19690720) {
-		 console.log(result,i,j)
+		 console.log(result,i,j);
+		 break
 		}
 	}
 }
