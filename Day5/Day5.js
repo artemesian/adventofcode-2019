@@ -80,5 +80,63 @@ const computeCode = input => {
     i += instructionLength;
   }
 };
-
 console.log(computeCode(input));
+
+const inputs = fs
+  .readFileSync("./input1.txt", "utf8")
+  .split(",")
+  .map(Number);
+
+let i = 0;
+
+while (i < inputs.length) {
+  const opcode = inputs[i];
+
+  const DE = opcode % 100;
+  const C = Math.floor((opcode / 100) % 10);
+  const B = Math.floor((opcode / 1000) % 10);
+  const A = Math.floor((opcode / 10000) % 10);
+
+  const num1 = C === 0 ? inputs[inputs[i + 1]] : inputs[i + 1];
+  const num2 = B === 0 ? inputs[inputs[i + 2]] : inputs[i + 2];
+  const position = A === 0 ? inputs[i + 3] : i + 3;
+
+  switch (DE) {
+    case 1:
+      inputs[position] = num1 + num2;
+      i += 4;
+      break;
+    case 2:
+      inputs[position] = num1 * num2;
+      i += 4;
+      break;
+    case 3:
+      inputs[inputs[i + 1]] = 5;
+      i += 2;
+      break;
+    case 4:
+      console.log(inputs[inputs[i + 1]]);
+      i += 2;
+      break;
+    case 5:
+      if (num1 !== 0) i = num2;
+      else i += 3;
+      break;
+    case 6:
+      if (num1 === 0) i = num2;
+      else i += 3;
+      break;
+    case 7:
+      inputs[position] = num1 < num2 ? 1 : 0;
+      i += 4;
+      break;
+    case 8:
+      inputs[position] = num1 === num2 ? 1 : 0;
+      i += 4;
+      break;
+    case 99:
+      process.exit();
+    default:
+      throw new Error("invalid opcode");
+  }
+}
